@@ -3,7 +3,7 @@
  * @file        test_base64_encode.c
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION} (${PROJECT_VCS_HASH})
+ * @version     ${PROJECT_VERSION}
  * @copyright   ${PROJECT_COPYRIGHT}
  ***********************************************************************************************************************
  */

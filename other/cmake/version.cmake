@@ -6,7 +6,7 @@
 set(PROJECT_AUTHOR "Diego Martínez García")
 set(PROJECT_CONTACT "dmg0345@gmail.com")
 set(PROJECT_URL "https://github.com/dmg0345/bde")
-set(PROJECT_DESCRIPTION "Base Decoder and Encoder.")
+set(PROJECT_DESCRIPTION "Base Decoder and Encoder")
 set(PROJECT_COPYRIGHT "https://github.com/dmg0345/bde/blob/master/LICENSE")
 set(PROJECT_VERSION_MAJOR "1")
 set(PROJECT_VERSION_MINOR "0")
@@ -60,7 +60,7 @@ set(VERSION_INFO "/**
  * @file        version.h
  * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
  * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION} (${PROJECT_VCS_HASH})
+ * @version     ${PROJECT_VERSION}
  * @copyright   ${PROJECT_COPYRIGHT}
  ***********************************************************************************************************************
  */
@@ -138,6 +138,10 @@ extern \"C\" {
  */
 #define ${PROJECT_NAME}_VERSION \"${PROJECT_VERSION}\"
 
+/**
+ * @}
+ */
+
 /** 
  * @rst
  * ${PROJECT_VCS_HASH}
@@ -166,10 +170,6 @@ extern \"C\" {
  * @endrst
  */
 #define ${PROJECT_NAME}_BUILD_TIMESTAMP_UTC \"${PROJECT_BUILD_TIMESTAMP_UTC}\"
-
-/**
- * @}
- */
 
 /* Exported macro ----------------------------------------------------------------------------------------------------*/
 /**
