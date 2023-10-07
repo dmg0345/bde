@@ -1,10 +1,10 @@
 /**
  ***********************************************************************************************************************
  * @file        encode.h
- * @author      ${PROJECT_AUTHOR} (${PROJECT_CONTACT})
- * @date        ${PROJECT_BUILD_TIMESTAMP_UTC}
- * @version     ${PROJECT_VERSION} (${PROJECT_VCS_HASH})
- * @copyright   ${PROJECT_COPYRIGHT}
+ * @author      Diego Martínez García (dmg0345@gmail.com)
+ * @date        07-10-2023 23:44:17 (UTC)
+ * @version     1.0.0
+ * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
 
