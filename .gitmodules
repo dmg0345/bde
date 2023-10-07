@@ -1,0 +1,6 @@
+[submodule "tests/cmocka/cmocka"]
+	path = tests/cmocka/cmocka
+	url = https://gitlab.com/cmocka/cmocka
+[submodule "other/powershell"]
+	path = other/powershell
+	url = https://github.com/dmg0345/powershell.git

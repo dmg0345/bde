@@ -1,0 +1,28 @@
+# Ignore Python cache folders.
+/**/__pycache__
+# Ignore CMake build directory.
+.cmake_build
+# Ignore all logs.
+/**/*.log
+# Ignore test results and coverage reports.
+/tests/.coverage
+/tests/.test_results
+# Ignore CppCheck build directories and potential .txt files with the MISRA rules if any.
+/other/cppcheck/.build
+/other/cppcheck/.report
+/other/cppcheck/*.txt
+# Ignore Doxygen, Sphinx and related documentation files.
+/doc/.sphinx_build
+/doc/.doxygen_build
+/doc/.output
+# Ignore distributables.
+dist
+
+# Ignore version file.
+/src/inc/bde/other/version.h
+
+# Ignore Visual Studio Code user data directory, except for the user settings.
+.vscode_user/*
+!.vscode_user/User
+.vscode_user/User/*
+!.vscode_user/User/settings.json

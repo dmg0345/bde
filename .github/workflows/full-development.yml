@@ -1,0 +1,22 @@
+# Development workflow
+#
+# This workflow triggers whenever there is a push on the 'develop' branch.
+# The 'develop' branch should be configured to restrict direct commits.
+# The deployment is performed on 'https://www.development-xxx.netlify.app' and reflects last commit on 'develop'.
+
+on: 
+  push: 
+    branches: develop
+
+name: (Development) - Full
+run-name: "#${{ github.run_number }}: ${{ github.event.head_commit.message }}"
+jobs:
+  off-target:
+    uses: dmg0345/bde/.github/workflows/reusable-full.yml@develop
+    secrets:
+      netlify_pat: ${{ secrets.NETLIFY_PAT }}
+      netlify_site_id: ${{ secrets.NETLIFY_SITE_ID }}
+    with:
+      docker_base_image: dmg00345/bde:latest
+      deploy: development
+      deploy_alias: development

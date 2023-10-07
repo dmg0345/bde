@@ -1,0 +1,8 @@
+# Set line endings on files.
+*.c text eol=crlf
+*.h text eol=crlf
+*.hpp text eol=crlf
+*.cpp text eol=crlf
+*.rst text eol=crlf
+
+# Symbolic links, this must be last.
