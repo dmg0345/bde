@@ -1,52 +1,58 @@
 <?xml version="1.0"?>
+<!-- 
+    CppCheck suppressions file, use this to globally suppress directories, files, rules... and use 
+    inline suppressions where possible and convenient.
+-->
 <suppressions>
-    <!-- Exclude Paths -->
+    <!-- ################################### Suppressed Directories ############################# -->
+    <!-- Suppress every rule in third party test harness. -->
     <suppress>
         <id>*</id>
         <fileName>*tests/cmocka/*</fileName>
     </suppress>
-
-    <!-- Suppress unmatched suppression, which generates noise in many scenarios. -->
+    <!-- ################################### Suppressed Files ################################### -->
+    <!-- ################################### Suppressed Rules ################################### -->
+    <!--
+    Supress missing system includes rule, it is not recommended to provide the paths to CppCheck:
+        - https://stackoverflow.com/questions/6986033/cppcheck-cant-find-include-files
+    -->
+    <suppress> 
+        <id>missingIncludeSystem</id>
+        <fileName>*</fileName>
+    </suppress>
+    <!-- Suppress unmatched suppression rule, which generates noise in many scenarios. -->
     <suppress> 
         <id>unmatchedSuppression</id>
         <fileName>*</fileName>
     </suppress>
-
+    <!-- Suppress variable scope rule. -->
+    <suppress>
+        <id>variableScope</id>
+        <fileName>*</fileName>
+    </suppress>
     <!-- Suppress unread variables, it can trigger for default initialization values for variables in functions. -->
     <suppress> 
         <id>unreadVariable</id>
         <fileName>*</fileName>
     </suppress>
-
     <!-- Advisory rule, allow early returns for for validation of parameters and error handling. -->
     <suppress>
         <id>misra-c2012-15.5</id>
         <fileName>*</fileName>
     </suppress>
-
     <!-- Advisory rule, allow static variables to remain on the file scope even if just used in a single function. -->
     <suppress>
         <id>misra-c2012-8.9</id>
         <fileName>*</fileName>
     </suppress>
-
     <!-- Advisory rule, allow pointer arithmetic. -->
     <suppress>
         <id>misra-c2012-18.4</id>
         <fileName>*</fileName>
     </suppress>
-
     <!-- Advisory rule, allow increment and decrement operators with side effects. -->
     <suppress>
         <id>misra-c2012-13.3</id>
-        <fileName>*</fileName>
-    </suppress>
-
-    <!-- Supress missing system includes, it is not recommended to provide the paths to CppCheck. 
-        - https://stackoverflow.com/questions/6986033/cppcheck-cant-find-include-files
-    -->
-    <suppress> 
-        <id>missingIncludeSystem</id>
         <fileName>*</fileName>
     </suppress>
 </suppressions>

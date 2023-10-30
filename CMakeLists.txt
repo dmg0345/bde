@@ -21,6 +21,8 @@ project(BDE)
 
 # Load utils.
 include("other/cmake/utils.cmake")
+# Include FetchContent API.
+include(FetchContent)
 
 # Enable languages and configure them explicitly.
 enable_language(C CXX ASM)
@@ -47,7 +49,7 @@ set_property(CACHE CFG_LIB_BUILD_TYPE PROPERTY STRINGS "STATIC" "SHARED")
 set(CFG_TAG "OFF" CACHE STRING "Tags the C/C++ source and header files, defaults to 'OFF'.")
 set_property(CACHE CFG_TAG PROPERTY STRINGS "OFF" "FILENAMES_ONLY" "ON")
 
-# Adds coverage to the tests, this is only applicable to off-target tests.
+# Adds coverage to the tests.
 set(CFG_TESTS_ENABLE_COVERAGE "OFF" CACHE STRING "Adds coverage to the off-target tests, defaults to 'OFF'.")
 set_property(CACHE CFG_TESTS_ENABLE_COVERAGE PROPERTY STRINGS "OFF" "ON")
 
@@ -70,33 +72,18 @@ message(STATUS "CMAKE_TOOLCHAIN_FILE: '${CMAKE_TOOLCHAIN_FILE}'")
 message(STATUS "CFG_LIB_BUILD_TYPE: '${CFG_LIB_BUILD_TYPE}'")
 message(STATUS "CFG_TAG: '${CFG_TAG}'")
 message(STATUS "CFG_TESTS_ENABLE_COVERAGE: '${CFG_TESTS_ENABLE_COVERAGE}'")
+message(STATUS "CFG_CI: '${CFG_CI}'")
 message(STATUS "BUILD_TESTING: '${BUILD_TESTING}'")
 message(STATUS "CMAKE_VERBOSE_MAKEFILE: '${CMAKE_VERBOSE_MAKEFILE}'")
 message(STATUS "#########################################################")
 
-# Ensure coverage is only enabled when building tests is also enabled.
+# Perform sanity check on testing related variables:
+#  - Coverage can only be enabled when the tests are built.
 if(NOT ${BUILD_TESTING})
     if ((${CFG_TESTS_ENABLE_COVERAGE} STREQUAL "ON"))
         message(FATAL_ERROR "If CFG_TESTS_ENABLE_COVERAGE is 'ON' BUILD_TESTING needs to be 'ON'.")
     endif()
 endif()
-
-## Project source files ################################################################################################
-# Project source files in this context are the source and header files created by the user, the glob expressions
-# below will get C (.c, .h) and C++ (.cpp, .hpp) files recursively.
-file(GLOB_RECURSE PROJECT_SOURCE_FILES
-    "${PROJECT_ROOT_DIR}/src/*.c"
-    "${PROJECT_ROOT_DIR}/src/*.h"
-    "${PROJECT_ROOT_DIR}/tests/tests/*.c"
-    "${PROJECT_ROOT_DIR}/tests/tests/*.h"
-)
-
-# Save the list of project source files to file, so that they can be used by external tools.
-set(PROJECT_SOURCES_FILE_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/psf.txt")
-message(STATUS "Storing project source files list at '${PROJECT_SOURCES_FILE_LOCATION}'...")
-string (REPLACE ";" "\r\n" PROJECT_SOURCE_FILES_FILE_CONTENTS "${PROJECT_SOURCE_FILES}")
-file(WRITE "${PROJECT_SOURCES_FILE_LOCATION}" "${PROJECT_SOURCE_FILES_FILE_CONTENTS}")
-configure_file("${PROJECT_SOURCES_FILE_LOCATION}" "${PROJECT_SOURCES_FILE_LOCATION}" NEWLINE_STYLE CRLF)
 
 ## Installation directories ############################################################################################
 # Override default installation directory if one was not provided by the user.

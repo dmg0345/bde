@@ -1,5 +1,12 @@
 # Clang Format file, in YAML format, for reference regarding the options available refer to:
 # > https://releases.llvm.org/15.0.0/tools/clang/docs/ClangFormatStyleOptions.html
+#
+# To check when upgrading to a new version of clang-format:
+#
+# TODO: No break for brace after do in do-while statements.
+# TODO: Function parameters will wrap to the same line when surpassing line limit by just a few chars, should
+#       wrap to one line per parameter, except for the first parameter which remains on the same line.
+# TODO: Review for C++17.
 
 # BasedOnStyle
 AccessModifierOffset: 0
@@ -59,7 +66,7 @@ CompactNamespaces: false
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
-DeriveLineEnding: false
+DeriveLineEnding: true
 DerivePointerAlignment: false
 DisableFormat: false
 EmptyLineAfterAccessModifier: Never
@@ -151,6 +158,6 @@ SpacesInSquareBrackets: false
 # StatementMacros
 TabWidth: 4
 # TypenameMacros
-UseCRLF: true
+# UseCRLF: true
 UseTab: Never
 # WhitespaceSensitiveMacros

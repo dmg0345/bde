@@ -14,15 +14,13 @@ Clone the repository as:
 
 .. code-block:: powershell
 
-    git clone https://github.com/dmg0345/bde --branch master
-    cd bde
-    git submodule update --init --recursive
+    git clone https://github.com/dmg0345/bde
 
 Example commands to build the library and run the tests are provided below:
 
 .. code-block:: powershell
 
-    cmake -C "./other/cmake/preload/off_target_host_release.cmake" -S . -B "./.cmake_build"
+    cmake -C "./other/cmake/preload/release.cmake" -S . -B "./.cmake_build"
     cmake --build "./.cmake_build" -j --target all
     cmake --build "./.cmake_build" -j --target install
     ctest --test-dir "./.cmake_build"
@@ -33,7 +31,6 @@ develop using `devcontainers` and `Visual Studio Code`:
 .. code-block:: powershell
 
     docker pull dmg00345/bde:latest
-    docker tag dmg00345/bde:latest bde_c_cpp_image:latest
     ./manage.ps1 run
 
 Create a release

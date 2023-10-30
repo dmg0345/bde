@@ -33,7 +33,7 @@ on:
         default: "none"
         type: string
       deploy_alias:
-        description: Additional deploy alias for the deployment URLs, if using multiple deployments for same commit.
+        description: Additional deploy alias for the deployment URLs, use URL safe characters and a reasonable lenght.
         required: false
         default: ""
         type: string
@@ -81,21 +81,21 @@ jobs:
       - name: Build every target with CMake
         run: |
           # Define configuration and other related parameters.
-          # These must be the same configurations as in 'cmake-variants.json'.
           $cfgs = @{
-            'Debug' = @{ 'preload' = 'off_target_host_debug' };
-            'Release' = @{ 'preload' = 'off_target_host_release' };
+            'Debug' = @{ 'preload' = 'debug' };
+            'Release' = @{ 'preload' = 'release' };
           };
 
           # Loop each configuration and build it.
           foreach ($cfg in $cfgs.GetEnumerator())
           {
             Write-Host "Currently working with configuration '$($cfg.Name)'...";
+            # Print remaining space.
+            Get-PSDrive | Write-Output;
 
             # Rename clone folder to configuration, move to repository and ensure it is clean.
             Rename-Item -Path "$ENV:CLONE_FOLDER" -NewName "$($cfg.Name)" -Force;
             Push-Location "$($cfg.Name)";
-            & "./manage.ps1" clean;
 
             # Prepare configuration tree.
             cmake --fresh -C "./other/cmake/preload/$($cfg.Value.preload).cmake" -S . -B "$ENV:CMAKE_FOLDER" `
@@ -106,10 +106,38 @@ jobs:
             cmake --build "$ENV:CMAKE_FOLDER" -j --target all;
             if ($LastExitCode -ne 0) { throw "$($cfg.Name): CMake build step failed with error '$LastExitCode'." };
 
-            # Go back to parent folder, TAR it and rename it back to original.
+            # Go back to parent folder and TAR repository.
+            # Note that the folders and files that are not relevant are excluded, to reduce time, size and not to surpass runner space limit.
             Pop-Location;
-            tar -cf "$($cfg.Name).repo.tar.gz" "$($cfg.Name)";
+            tar `
+              --exclude="*.obj" `
+              --exclude="*.o" `
+              --exclude="*.pdf" `
+              --exclude="$($cfg.Name)/.git" `
+              --exclude="$($cfg.Name)/src/third_party" `
+              -cf "$($cfg.Name).repo.tar.gz" "$($cfg.Name)";
             if ($LastExitCode -ne 0) { throw "$($cfg.Name): Compressing the repository failed with error '$LastExitCode'." }
+
+            # Add to the TAR relevant files from the excluded folders, based on as they exist or not basis for simplicity.
+            $incFolders = @();
+
+            # Loop items and add those that exist in the repository after build.
+            foreach ($item in $incFolders)
+            {
+              if (Test-Path "$item")
+              {
+                Write-Host "Adding '$item'...";
+                tar -rf "$($cfg.Name).repo.tar.gz" "$item";
+                if ($LastExitCode -ne 0) { throw "$($cfg.Name): Compressing the repository failed with error '$LastExitCode'." }
+              }
+            }
+
+            # Clean for the next run, after the tarring has ocurred.
+            Push-Location "$($cfg.Name)";
+            & "./manage.ps1" clean;
+            Pop-Location;
+
+            # Rename back to original name.
             Rename-Item -Path "$($cfg.Name)" -NewName "$ENV:CLONE_FOLDER" -Force;
           }
       - name: Upload tarred ${{ github.sha }}
@@ -264,11 +292,10 @@ jobs:
             if ($LastExitCode -ne 0) { throw "Decompressing $cfg failed with error '$LastExitCode'." }
             Push-Location "$cfg";
 
-            # Run tests and generate reports, only do coverage for non-release builds.
-            # At least one of the configurations must generate 'coverage' reports.
+            # Run tests and generate reports.
             ctest --extra-verbose --output-log "$ENV:TESTS_HTML_FOLDER/output.log" --no-tests=error --test-dir "$ENV:CMAKE_FOLDER";
             & "./manage.ps1" test_report;
-            if ($cfg -ne "Release") 
+            if ($cfg -in @("Debug"))
             {
               & "./manage.ps1" coverage;
             }
@@ -308,7 +335,7 @@ jobs:
             $cfg = $_.Name.Substring(0, $_.Name.IndexOf("."));
             Write-Host "Currently working with configuration '$cfg'...";
             tar -xf "$($_.FullName)" "$cfg";
-            if ($LastExitCode -ne 0) { throw "Decompressing $cfg failed with error '$LastExitCode'." }
+            if ($LastExitCode -ne 0) { throw "Decompressing '$cfg' failed with error '$LastExitCode'." }
             Push-Location "$cfg";
 
             # Generate HTML documentation.
@@ -349,7 +376,7 @@ jobs:
         run: |
           # Create source paths to folders with reports.
           $srcCoverageReports = "./html_coverage_reports/Debug/$ENV:COVERAGE_HTML_FOLDER";
-          $srcTestResultReports = "./html_test_results/Release/$ENV:TESTS_HTML_FOLDER";
+          $srcTestResultReports = "./html_test_results/Debug/$ENV:TESTS_HTML_FOLDER";
 
           # Create destination paths to folders with the reports.
           $destCoverageReports = "./html_docs/Release/$ENV:DOCS_HTML_FOLDER/_static/_test_coverage";

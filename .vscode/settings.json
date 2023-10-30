@@ -41,11 +41,14 @@
     // Exclude files from appearing in the explorer.
     "files.exclude": {
         "**/.git": true,
-        "**/__pycache__": true,
-        "**/.vscode_user": true
+        "**/__pycache__": true
     },
-    // Set the default line ending to Windows based.
-    "files.eol": "\r\n",
+    // Disable detection of indentation based on content and use settings below.
+    "editor.detectIndentation": false,
+    // Configure tab sizes for files, 4 spaces by default.
+    "[*]": {"editor.tabSize": 4},
+    "[yaml]": {"editor.tabSize": 2},
+    "editor.insertSpaces": true,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // C/C++ extension settings
@@ -175,15 +178,25 @@
     // Start the terminal for intellisense and related on the background.
     "powershell.integratedConsole.startInBackground": true,
     "powershell.integratedConsole.showOnStartup": false,
-    // Disable Powershell sidebar.
+    // Disable PowerShell sidebar.
     "powershell.sideBar.CommandExplorerVisibility": false,
+    // Disable PowerShell updates.
+    "powershell.promptToUpdatePowerShell": false,
+    // Disable banners when starting PowerShell.
+    "powershell.integratedConsole.suppressStartupBanner": true,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Github Actions extensio settings
+    // Github Actions extension settings
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Disable extension, it is only used for validation and intellisense of Github Action files.
     "github-actions.workflows.pinned.workflows": [],
     "github-actions.workflows.pinned.refresh.enabled": false,
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Git-Log Graph extension settings
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Trigger from the status bar.
+    "git-log--graph.position": "editor",
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // NET Runtime Install tool extension settings

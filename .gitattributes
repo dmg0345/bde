@@ -1,8 +1,11 @@
-# Set line endings on files.
-*.c text eol=crlf
-*.h text eol=crlf
-*.hpp text eol=crlf
-*.cpp text eol=crlf
-*.rst text eol=crlf
+# Set the default behaviour.
+* text=auto
+
+# Files to explicitly be normalized and converted to native line endings on checkout.
+*.c text
+*.h text
+*.hpp text
+*.cpp text
+*.rst text
 
 # Symbolic links, this must be last.

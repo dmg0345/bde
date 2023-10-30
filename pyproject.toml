@@ -40,7 +40,6 @@ ignore-path = [
     ".github",
     ".git",
     ".vscode",
-    ".vscode_user",
     "dist",
     "other",
     "src",

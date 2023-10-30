@@ -12,7 +12,7 @@ param (
     #    'run': Host command creates or uses an existing development container and starts it in the current folder.
     #    'clang-format': Container command, runs 'clang-format' project wide.
     #    'clang-tidy': Container command, runs 'clang-tidy' project wide.
-    #    'cppcheck': Container command, runs 'cppcheck' and its MISRA addon project wide.
+    #    'cppcheck': Container command, runs 'cppcheck' project wide.
     #    'doc8': Container command, runs 'doc8' project wide.
     #    'test_report': Container command, runs 'junit2html' from a log file with 'CMocka' XML output project wide.
     #    'coverage': Container command, runs 'fastcov' and 'lcov' project wide.
@@ -23,36 +23,51 @@ param (
         "coverage", "docs"
     )]
     [String]
-    $Command
+    $Command,
+
+    # Along with command 'cppcheck', uses the CppCheck rule summaries for MISRA C:2012.
+    [Parameter(Mandatory = $false)]
+    [Switch]
+    $CppCheckUseC2012Rules
 )
 
 # Stop on first error found.
 $ErrorActionPreference = "Stop";
 
+# If the 'powershell_scripts' folder does not exist, shallow clone the latest version of the repository.
+$cloneDir = "$PSScriptRoot/other/powershell_scripts";
+if (-not (Test-Path "$cloneDir"))
+{
+    & "git" clone --branch "master" --depth 1 --shallow-submodules --recurse-submodules `
+        "https://github.com/dmg0345/powershell_scripts" "$cloneDir";
+    if ($LASTEXITCODE -ne 0)
+    {
+        throw "Failed to clone Git repository with the PowerShell scripts.";
+    }
+}
+
 # Imports.
-Import-Module "$PSScriptRoot/other/powershell/modules/commons.psm1";
-Import-Module "$PSScriptRoot/other/powershell/modules/devcontainers.psm1";
-Import-Module "$PSScriptRoot/other/powershell/modules/linters.psm1";
-Import-Module "$PSScriptRoot/other/powershell/modules/tests.psm1";
-Import-Module "$PSScriptRoot/other/powershell/modules/documentation.psm1";
+Import-Module "$PSScriptRoot/other/powershell_scripts/modules/commons.psm1";
+Import-Module "$PSScriptRoot/other/powershell_scripts/modules/devcontainers.psm1";
+Import-Module "$PSScriptRoot/other/powershell_scripts/modules/linters.psm1";
+Import-Module "$PSScriptRoot/other/powershell_scripts/modules/tests.psm1";
+Import-Module "$PSScriptRoot/other/powershell_scripts/modules/documentation.psm1";
 
 # [Declarations] #######################################################################################################
-# Location of the CppCheck MIRSA rules file.
-$CPPCHECK_MISRA_RULES_FILE = "other/cppcheck/cppcheck_misra_rules.txt";
 # Path to 'devcontainer.json' file.
 $DEVCONTAINER_FILE = ".devcontainer/devcontainer.json"; 
 # Project name for the Docker compose project.
-$DEVCONTAINER_PROJECT_NAME = "bde_c_cpp";
+$DEVCONTAINER_PROJECT_NAME = "bde";
 
 # [Internal Functions] #################################################################################################
 
 # [Functions] ##########################################################################################################
 
 # [Execution] ##########################################################################################################
-# Ensure the current location is the location of the script and it is the root of a Git repository.
-if ((-not (Test-Path ".git")) -or (((Get-Item "$PSScriptRoot").Hashcode) -ne ((Get-Item "$PWD").Hashcode)))
+# Ensure the current location is the location of the script.
+if (((Get-Item "$PSScriptRoot").Hashcode) -ne ((Get-Item "$PWD").Hashcode))
 {
-    throw "The script must run from the root directory of the repository, where this script is located."
+    throw "The script must run from the root directory, where this script is located."
 }
 
 if ($Command -eq "load")
@@ -70,9 +85,7 @@ elseif ($Command -eq "clean")
 elseif ($Command -eq "build")
 {
     # Build inputs for the development container.
-    $inputs = @{
-        
-    };
+    $inputs = @{};
 
     # Build outputs for the development container.
     $outputs = @{
@@ -88,46 +101,99 @@ elseif ($Command -eq "build")
 }
 elseif ($Command -eq "run")
 {
-    # Artifacts to copy in the workspace each time the development container is run.
+    # Artifacts to copy in the workspace for the initialization script.
     $inputs = @{
-        # This is the CppCheck MISRA Rules file, which is copied from the host to the workspace.
+        # This is the host path to Git authentication key.
         # 
-        # This file should not be commited to the repository, keep the '.gitignore' updated.
-        "CppCheck MISRA Rules" = @{
-            "srcPath"  = "../../Local/misra-files/misra-c-2012/cppcheck_misra_rules.txt";
-            "destPath" = "$CPPCHECK_MISRA_RULES_FILE";
+        # This can't be provided as a secret in the Compose file as it needs specific permissions for it to be
+        # trusted by the SSH utilities, and Compose does not do that, thus we copy it here and set the permissions
+        # explicitly from the initialization script.
+        "Git Authentication Key" = @{
+            "hostPath" = "../!local/other-files/github/dmg0345-authentication-key/private-authentication-key.pem";
+        };
+
+        # This is the host path to Git signing key to sign commits.
+        # 
+        # This can't be provided as a secret in the Compose file as it needs specific permissions for it to be
+        # trusted by the SSH utilities, and Compose does not do that, thus we copy it here and set the permissions
+        # explicitly from the initialization script.
+        "Git Signing Key"        = @{
+            "hostPath" = "../!local/other-files/github/dmg0345-signing-key/private-signing-key.pem";
         };
     };
+    
+    # Create initialization script for the volume of the development container.
+    $initScript = @'
+# Configure Git for user.
+git config --global user.name "$ENV:GITHUB_USERNAME";
+git config --global user.email "$ENV:GITHUB_EMAIL";
+git config --global user.signingkey "/vol_store/private-signing-key.pem";
+git config --global core.sshCommand "ssh -i '/vol_store/private-authentication-key.pem' -o 'IdentitiesOnly yes'";
+
+# Own and set permissions of the keys to read/write for SSH to use them.
+Get-ChildItem -Path "/vol_store" -Include "*.pem" -Recurse | ForEach-Object -Process `
+{
+    chown $(id -u -n) "$($_.FullName)";
+    chmod 600 "$($_.FullName)";
+}
+
+# Trust Github for SSH connections.
+if (-not (Test-Path "~/.ssh/known_hosts")) { New-Item -Path "~/.ssh/known_hosts" -ItemType File -Force | Out-Null; }
+Set-Content -Path "~/.ssh/known_hosts" -Value "$(ssh-keyscan github.com)" -Force;
+
+# Clone repository in the workspace folder.
+git clone --recurse-submodules --branch develop "git@github.com:dmg0345/bde.git" ".";
+if ($LASTEXITCODE -ne 0) { throw "Failed to clone repository." }
+'@;
 
     Start-DevContainer -DevcontainerFile "$DEVCONTAINER_FILE" -ProjectName "$DEVCONTAINER_PROJECT_NAME" `
-        -Inputs $inputs;
+        -VolumeInitScript $initScript -Inputs $inputs;
 }
 elseif ($Command -eq "clang-format")
 {
-    Start-ClangFormat -ClangFormatExe "clang-format-15" -Files ".cmake_build/psf.txt" -ConfigFile ".clang-format";
+    # Build list of files and folders.
+    $paths = @(
+        "src",
+        "tests/tests"
+    );
+
+    Start-ClangFormat -ClangFormatExe "clang-format-15" -Paths $paths -ConfigFile ".clang-format";
 }
 elseif ($Command -eq "clang-tidy")
 {
-    Start-ClangTidy -ClangTidyExe "clang-tidy-15" -Files ".cmake_build/psf.txt" -ConfigFile ".clang-tidy" `
-        -CMakeBuildDir ".cmake_build";
-}
-elseif ($Command -eq "cppcheck")
-{
-    # Build regular expressions to check for analysis.
+    # Build wildcard expressions.
     $fileFilters = @(
         "src/*",
         "tests/tests/*"
     );
 
+    Start-ClangTidy -ClangTidyExe "clang-tidy-15" -Filters $fileFilters -ConfigFile ".clang-tidy" `
+        -CMakeBuildDir ".cmake_build";
+}
+elseif ($Command -eq "cppcheck")
+{
+    # Build wildcard expressions.
+    $fileFilters = @(
+        "src/*",
+        "tests/tests/*"
+    );
+
+    # Determine whether to use rule summaries or no rule summaries.
+    $cppCheckRules = "";
+    if ($CppCheckUseC2012Rules.IsPresent)
+    {
+        $cppCheckRules = "/run/secrets/cppcheck_c_2012_misra_rules";
+    }
+
     Start-CppCheck `
-        -CppCheckExe "cppcheck" -PythonExe "python" -CppCheckHTMLReportExe "cppcheck-htmlreport" -MaxJobs 1 `
-        -CppCheckRulesFile "$CPPCHECK_MISRA_RULES_FILE" -SuppressionXML "other/cppcheck/suppressions.xml" `
+        -CppCheckExe "cppcheck" -CppCheckHTMLReportExe "cppcheck-htmlreport" -MaxJobs 1 `
+        -SuppressionXML "other/cppcheck/suppressions.xml" -CppCheckC2012RulesFile "$cppCheckRules" `
         -CompileCommandsJSON ".cmake_build/compile_commands.json" -FileFilters $fileFilters `
         -CppCheckBuildDir "other/cppcheck/.build" -CppCheckReportDir "other/cppcheck/.report" -CppCheckSourceDir ".";
 }
 elseif ($Command -eq "doc8")
 {
-    # Folds and files where to run doc8.
+    # Build list of files and folders.
     $inputs = @(
         "doc",
         "readme.rst"
@@ -153,7 +219,7 @@ elseif ($Command -eq "coverage")
 elseif ($Command -eq "docs")
 {
     Start-DoxygenSphinx -DoxygenExe "doxygen" -SphinxBuildExe "sphinx-build" -ConfigFolder "doc" `
-        -HTMLOutput "doc/.output/html";
+        -CMakeBuildDir ".cmake_build" -HTMLOutput "doc/.output/html";
 }
 else
 {
