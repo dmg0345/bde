@@ -1,13 +1,22 @@
-"""Configuration file for the Sphinx documentation builder.
+"""
+Configuration file for the Sphinx documentation builder, this file expects Doxygen to have been executed first and
+its XML output to be at the specified location. Relevant links for documentation of Sphinx and Doxygen are shown below:
 
-Prior to running Sphinx, run doxygen as ``doxygen ./doc/doxyfile``.
-
-For a full list see the documentation: https://www.sphinx-doc.org/en/master/usage/configuration.html."""
+  - Sphinx:
+    - https://www.sphinx-doc.org/en/master/usage/configuration.html
+    - Conditional Documentation: https://stackoverflow.com/a/45637280/21951997
+  - Doxygen:
+    - Grouping: https://www.doxygen.nl/manual/grouping.html
+    - Autolink to enumerations, functions and so on: https://www.doxygen.nl/manual/autolink.html
+    - Conditional documentation: https://www.doxygen.nl/manual/commands.html#cmdif
+"""
 
 # pylint: skip-file
 # type: ignore
 
 import sphinx
+import os
+import xml.etree.ElementTree as ET
 
 ## Project information #################################################################################################
 # Project name.
@@ -124,11 +133,36 @@ breathe_show_include = False
 # Debug directives.
 breathe_debug_trace_directives = True
 
+def breathe_load_tags_on_doxyfile() -> None:
+    """Loads the ENABLED_SECTIONS configuration of the DoxyFile when the XML is generated, and adds it as tags, suitable
+    to be used with the @only directive in Sphinx.
+
+    Note that only sections with valid Python identifiers are loaded: Only contains alphanumeric letters (a-z) and
+    (0-9), or underscores (_). A valid identifier cannot start with a number, or contain any spaces."""
+    # Create path to the file and ensure it exists.
+    doxyfile_xml = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".doxygen_build", "xml", "Doxyfile.xml")
+    if not os.path.exists(doxyfile_xml):
+        raise sphinx.errors.ConfigError(f"Could not find Doxyfile at '{doxyfile_xml}'...")
+    # Parse XML and get the ENABLED_SECTIONS values, if they exist.
+    elems = [elem for elem in ET.parse(doxyfile_xml).getroot() if elem.get("id", "") == "ENABLED_SECTIONS"]
+    if len(elems) > 1:
+        raise sphinx.errors.ConfigError(f"Multiple 'ENABLED_SECTIONS' XML elements found, check the Doxyfile.")
+    # Add all tags with valid Python identifiers.
+    if len(elems) == 1:
+        _ = [tags.add(tag.text) for tag in elems[0] if tag.text.isidentifier()]
+
 ## Setup functionality #################################################################################################
 def on_missing_reference(_app: sphinx.application.Sphinx,
                          _env: app.builder.env,
                          node: sphinx.addnodes.pending_xref,
                          contnode: sphinx.addnodes.pending_xref):
+    """Handler for 'on_missing_reference' warning. Lots of false positives can be raised by Sphinx from this, for
+    example from missing references to standard library types or missing references to third-party types that are not
+    documented by Sphinx or which are not processed by Doxygen.
+
+    One solution is to disable errors as warnings, but this is not convenient as it could 
+
+    The implementation of this handler here allows to ignore warnings for the types specified."""
     # Print missing reference in color in the terminal to differentiate it.
     # print(f"\033[93m mon_missing_reference: {node}.\033[00m")
 
@@ -136,10 +170,17 @@ def on_missing_reference(_app: sphinx.application.Sphinx,
     # Trying to handle them with 'c_extra_keywords' or 'c_id_attributes' generates other kind of errors.
     # Allowed reference domains, reference targets and reference types that can be missing are described below.
     refdomains = ["c", "cpp"]
-    reftargets = [
+    reftypes = ["identifier"]
+    
+    # C Standard library identifiers to ignore.
+    c_std_reftargets = [
         "int8_t", "uint8_t", "int16_t", "uint16_t", "int32_t", "uint32_t", "int64_t", "uint64_t", "size_t"
     ]
-    reftypes = ["identifier"]
+
+    # Build total reftargets.
+    reftargets = [
+        *c_std_reftargets,
+    ]
 
     # Check if the reference is of C/C++ type and it can be allowed to be missing.
     if all((node["refdomain"] in refdomains, node["reftarget"] in reftargets, node["reftype"] in reftypes)):
@@ -153,4 +194,9 @@ def setup(app: sphinx.application.Sphinx):
 
         - https://www.sphinx-doc.org/en/master/extdev/appapi.html#module-sphinx.application
         - https://www.sphinx-doc.org/en/master/extdev/appapi.html#sphinx-core-events"""
+    # Load relevant tags to the 'tags' object from the Doxyfile.
+    breathe_load_tags_on_doxyfile()
+    # Register handler for the 'missing-reference' event.
     app.connect("missing-reference", on_missing_reference)
+    # Print tags just for informational purpopses.
+    print(f"Tags: {[i for i in tags]}.")

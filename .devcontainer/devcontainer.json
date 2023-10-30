@@ -9,10 +9,9 @@
     // Set the workspace folder to the mapped volume to the project root folder set in 'docker-compose' file.
     "workspaceFolder": "/workspace",
     // Set the name of the container in Visual Studio Code user interface, this is not the same as the container name.
-    "name": "bde_c_cpp",
+    "name": "bde",
     // Apply customizations to tools in the container.
     "customizations": {
-        // Visual Studio Code.
         "vscode": {
             // Extensions to use.
             "extensions": [
@@ -28,6 +27,7 @@
 
                 // Other.
                 "ms-vscode.powershell@2023.6.0",
+                "phil294.git-log--graph@0.1.12",
                 "github.vscode-github-actions@0.26.2", // Mainly used for validation and intellisense.
                 "trond-snekvik.simple-rst@1.5.3",
                 "lextudio.restructuredtext@189.3.0",
@@ -39,7 +39,7 @@
 
             // Set the settings.
             "settings": {
-                // Define 'pwsh' profile for Linux enviroments, this ensures the use of Powershell in terminals.
+                // Define 'pwsh' profile for Linux enviroments, this ensures the use of PowerShell in terminals.
                 // Start it with the Python virtual environment already activated.
                 "terminal.integrated.profiles.linux": {
                     "pwsh": {
@@ -49,19 +49,7 @@
                     }
                 },
                 // Set the default profile to 'pwsh' in Linux enviroments.
-                "terminal.integrated.defaultProfile.linux": "pwsh",
-
-                // Define 'pwsh' profile for Windows enviroments, this ensures the use of Powershell in terminals.
-                // Start it with the Python virtual environment already activated.
-                "terminal.integrated.profiles.windows": {
-                    "pwsh": {
-                        "path": "pwsh",
-                        "icon": "terminal-powershell",
-                        "args": ["-NoExit", "-Command", "& /usr/venvs/development/bin/Activate.ps1"]
-                    }
-                },
-                // Set the default profile to 'pwsh' in Windows enviroments.
-                "terminal.integrated.defaultProfile.windows": "pwsh"
+                "terminal.integrated.defaultProfile.linux": "pwsh"
             }
         }
     }

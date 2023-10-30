@@ -2,16 +2,15 @@
 #
 # This workflow triggers whenever there is a push on the 'master' branch.
 # The 'master' branch should be configured to restrict direct commits.
-# The deployment is performed on 'https://www.xxx.netlify.app' and reflects last commit on 'master'.
 
-on: 
-  push: 
+on:
+  push:
     branches: master
 
 name: (Production) - Full
 run-name: "#${{ github.run_number }}: ${{ github.event.head_commit.message }}"
 jobs:
-  off-target:
+  full-production:
     uses: dmg0345/bde/.github/workflows/reusable-full.yml@master
     secrets:
       netlify_pat: ${{ secrets.NETLIFY_PAT }}

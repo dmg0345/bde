@@ -19,7 +19,8 @@ Checks: >
   readability-*,
   -readability-identifier-length,
   -readability-avoid-const-params-in-decls,
-  -readability-magic-numbers
+  -readability-magic-numbers,
+  -readability-redundant-declaration
 WarningsAsErrors: >
   bugprone-*,
   clang-analyzer-*,

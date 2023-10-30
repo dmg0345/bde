@@ -1,18 +1,17 @@
-# Production workflow
+# Staging workflow
 #
 # This workflow triggers whenever a pull request is open, reopened or there are new commits on it.
-# The deployment is performed on 'https://www.{head_commit_sha}-xxx.netlify.app' and reflects last commit on the pull request.
 
 on: pull_request
 
-permissions: 
+permissions:
   contents: read
   pull-requests: write
 
 name: (Staging) - Full
 run-name: "#${{ github.run_number }}: ${{ github.event.pull_request.title }}"
 jobs:
-  off-target:
+  full-staging:
     uses: dmg0345/bde/.github/workflows/reusable-full.yml@master
     secrets:
       netlify_pat: ${{ secrets.NETLIFY_PAT }}
@@ -20,4 +19,4 @@ jobs:
     with:
       docker_base_image: dmg00345/bde:latest
       deploy: staging
-      deploy_alias: ${{ github.event.pull_request.head.sha }}
+      deploy_alias: staging-${{ github.run_number }}
