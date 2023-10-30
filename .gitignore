@@ -1,3 +1,6 @@
+# Ignore path to dependencies.
+/other/powershell_scripts
+/tests/cmocka/cmocka
 # Ignore Python cache folders.
 /**/__pycache__
 # Ignore CMake build directory.
@@ -7,7 +10,7 @@
 # Ignore test results and coverage reports.
 /tests/.coverage
 /tests/.test_results
-# Ignore CppCheck build directories and potential .txt files with the MISRA rules if any.
+# Ignore CppCheck build directories.
 /other/cppcheck/.build
 /other/cppcheck/.report
 /other/cppcheck/*.txt

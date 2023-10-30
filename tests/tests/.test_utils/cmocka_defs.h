@@ -48,7 +48,7 @@ extern "C" {
 
 /* Exported constants ------------------------------------------------------------------------------------------------*/
 /**
- * @addtogroup cmocka_defs_errors
+ * @addtogroup cmocka_defs_defs
  * @{
  */
 

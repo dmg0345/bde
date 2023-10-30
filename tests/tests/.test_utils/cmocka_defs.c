@@ -56,7 +56,7 @@
 
 /* Private function prototypes ---------------------------------------------------------------------------------------*/
 /**
- * @addtogroup bde_base64_iapi_impl
+ * @addtogroup cmocka_defs_iapi_impl
  * @{
  */
 

@@ -1,6 +1,14 @@
 # Create library target for the test harness, always static.
 add_library(cmocka STATIC)
 
+# Fetch contents if not already present.
+git_shallow_clone(
+    cmocka
+    "https://gitlab.com/cmocka/cmocka.git"
+    "cmocka-1.1.7"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmocka"
+)
+
 ## Compile Definitions #################################################################################################
 target_compile_definitions(cmocka PRIVATE
     # Header files availability.
