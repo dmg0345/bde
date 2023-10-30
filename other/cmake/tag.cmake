@@ -2,6 +2,14 @@
 # This file tags all the application, library and test files with data such as the project author and timestamps.
 ########################################################################################################################
 
+# Collect all '.c', '.cpp', '.h' and '.hpp' files from relevant folders for tagging.
+file(GLOB_RECURSE PROJECT_SOURCE_FILES
+    "${PROJECT_ROOT_DIR}/src/*.c"
+    "${PROJECT_ROOT_DIR}/src/*.h"
+    "${PROJECT_ROOT_DIR}/tests/tests/*.c"
+    "${PROJECT_ROOT_DIR}/tests/tests/*.h"
+)
+
 # Check if tagging filenames only.
 if (${CFG_TAG} STREQUAL "FILENAMES_ONLY")
     # Loop each file in the project source files and silently tag their filename if not already tagged.
