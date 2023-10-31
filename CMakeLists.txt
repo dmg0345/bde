@@ -18,7 +18,6 @@ cmake_policy(SET CMP0076 NEW)
 ## Project Definition ##################################################################################################
 # Define the project name.
 project(BDE)
-
 # Load utils.
 include("other/cmake/utils.cmake")
 # Include FetchContent API.
