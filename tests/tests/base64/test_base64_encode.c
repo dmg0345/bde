@@ -22,14 +22,9 @@
 static sample_test_data_t tds; /**< Test data structure. */
 
 /* Private function prototypes ---------------------------------------------------------------------------------------*/
-/**
- * @brief Suite setup function.
- */
+/** Suite setup function. */
 static int setup(void ** state);
-
-/**
- * @brief Suite teardown function.
- */
+/** Suite teardown function. */
 static int teardown(void ** state);
 
 /**
@@ -37,39 +32,19 @@ static int teardown(void ** state);
  * @{
  */
 
-/**
- * @brief Tests invalid arguments when performing a encoding to a Base64 string.
- */
+/** Tests invalid arguments when performing a encoding to a Base64 string. */
 static void test_base64_encode_invalid_args(void ** state);
-
-/**
- * @brief Tests invalid buffer lengths for the encoding buffer when encoding.
- */
+/** Tests invalid buffer lengths for the encoding buffer when encoding. */
 static void test_base64_encode_invalid_buffer_length(void ** state);
-
-/**
- * @brief Tests encoding without querying the encoded length.
- */
+/** Tests encoding without querying the encoded length. */
 static void test_base64_encode_ignored_buffer_length(void ** state);
-
-/**
- * @brief Tests encoding on two separate buffers, one for encoding and another for decoding.
- */
+/** Tests encoding on two separate buffers, one for encoding and another for decoding. */
 static void test_base64_encode_two_separate_buffers(void ** state);
-
-/**
- * @brief Tests encoding on a single in-place buffer, used for both encoding and decoding.
- */
+/** Tests encoding on a single in-place buffer, used for both encoding and decoding. */
 static void test_base64_encode_single_inplace_buffers(void ** state);
-
-/**
- * @brief Tests obtaining the length of a encode with invalid arguments.
- */
+/** Tests obtaining the length of a encode with invalid arguments. */
 static void test_base64_encode_length_invalid_args(void ** state);
-
-/**
- * @brief Tests obtaining the length of a encode for the samples.
- */
+/** Tests obtaining the length of a encode for the samples. */
 static void test_base64_encode_length_samples(void ** state);
 
 /**
@@ -228,7 +203,6 @@ static void test_base64_encode_length_samples(void ** state)
 }
 
 /* Exported functions ------------------------------------------------------------------------------------------------*/
-#if !defined(DOXYGEN)
 /**
  * @brief Test runner for this suite of tests.
  * @return The result of the test runner.
@@ -250,8 +224,7 @@ int main(void)
     };
 
     // Execute the test runner.
-    return cmocka_run_group_tests_name("test_base64_encode", tests, NULL, NULL);
+    return cmocka_run_group_tests_name("base64_encode", tests, NULL, NULL);
 }
-#endif /* !DOXYGEN */
 
 /******************************************************************************************************END OF FILE*****/
