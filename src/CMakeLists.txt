@@ -12,20 +12,20 @@ add_subdirectory("base64")
 
 ## Source files ########################################################################################################
 # Collect source files.
-set(SOURCES_BDE
+set(SOURCES_BDE_ALL
     ${SOURCES_BDE_BASE64}
     CACHE INTERNAL ""
 )
-target_sources(bde PRIVATE ${SOURCES_BDE})
+target_sources(bde PRIVATE ${SOURCES_BDE_ALL})
 
 ## Includes ############################################################################################################
 # Collect private include directories and add them to target, this will only be visible within the library.
-set(INCLUDE_DIRS_BDE
+set(INCLUDE_DIRS_BDE_ALL
     ${INCLUDE_DIRS_BDE_BASE64}
     "${CMAKE_CURRENT_SOURCE_DIR}/inc"
     CACHE INTERNAL ""
 )
-target_include_directories(bde PRIVATE ${INCLUDE_DIRS_BDE})
+target_include_directories(bde PRIVATE ${INCLUDE_DIRS_BDE_ALL})
 
 # Collect interface include directories and add them to target, these will only be visible by the application.
 set(INCLUDE_DIRS
