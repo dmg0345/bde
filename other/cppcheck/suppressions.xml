@@ -35,22 +35,34 @@
         <id>unreadVariable</id>
         <fileName>*</fileName>
     </suppress>
-    <!-- Advisory rule, allow early returns for for validation of parameters and error handling. -->
+    <!--
+    Advisory rule, MISRA Justification:
+        - Allow early returns for validation of parameters and error handling.
+    -->
     <suppress>
         <id>misra-c2012-15.5</id>
         <fileName>*</fileName>
     </suppress>
-    <!-- Advisory rule, allow static variables to remain on the file scope even if just used in a single function. -->
+    <!--
+    Advisory rule, MISRA Justification:
+        - Allow static variables to be on the file scope, better code organization and avoid functions with state.
+    -->
     <suppress>
         <id>misra-c2012-8.9</id>
         <fileName>*</fileName>
     </suppress>
-    <!-- Advisory rule, allow pointer arithmetic. -->
+    <!--
+    Advisory rule, MISRA Justification:
+        - Allow pointer arithmetic.
+    -->
     <suppress>
         <id>misra-c2012-18.4</id>
         <fileName>*</fileName>
     </suppress>
-    <!-- Advisory rule, allow increment and decrement operators with side effects. -->
+    <!--
+    Advisory rule, MISRA Justification:
+        - Allow increment and decrement operators with side effects.
+    -->
     <suppress>
         <id>misra-c2012-13.3</id>
         <fileName>*</fileName>
