@@ -17,7 +17,6 @@ extern "C" {
 #endif /* __cplusplus */
 
 /** @defgroup cmocka_defs_defs Definitions */
-/** @defgroup cmocka_defs_errors Errors */
 /** @defgroup cmocka_defs_papi Public API */
 
 /* Includes ----------------------------------------------------------------------------------------------------------*/
@@ -49,15 +48,6 @@ extern "C" {
 /* Exported constants ------------------------------------------------------------------------------------------------*/
 /**
  * @addtogroup cmocka_defs_defs
- * @{
- */
-
-/**
- * @}
- */
-
-/**
- * @addtogroup cmocka_defs_errors
  * @{
  */
 
@@ -104,6 +94,6 @@ void cmocka_init(void);
 }
 #endif /* __cplusplus */
 
-#endif /* CMOCKA_DEFS */
+#endif /* CMOCKA_DEFS_H */
 
 /******************************************************************************************************END OF FILE*****/
