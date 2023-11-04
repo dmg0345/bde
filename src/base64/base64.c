@@ -205,6 +205,7 @@ static bde_error_t bde_decode(const bde_enc_t * const encoded,
  * @{
  */
 
+/*--------------------------------------------------------------------------------------------------------------------*/
 static bde_error_t bde_encode_lengths(const size_t decoded_len,
                                       const size_t mode,
                                       size_t * const decoded_octets_cbl,
@@ -602,6 +603,7 @@ static bde_error_t bde_decode(const bde_enc_t * const encoded,
  * @{
  */
 
+/*--------------------------------------------------------------------------------------------------------------------*/
 bde_error_t bde_base64_encode_length(const size_t decoded_len, size_t * const encoded_len)
 {
     if ((decoded_len == 0U) || (encoded_len == NULL))
