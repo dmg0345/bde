@@ -94,9 +94,9 @@ html_short_title = html_title
 # HTML base URL which points to the root HTML documentation.
 html_baseurl = ""
 # Path to the HTML logo.
-html_logo = None
+html_logo = ".assets/img/logo_128x128.png"
 # Path to the HTML fav icon.
-html_favicon = None
+html_favicon = ".assets/img/logo_16x16.png"
 # Add permalinks to every section.
 html_permalinks = True
 # Do not include the original sources in the final documentation.
