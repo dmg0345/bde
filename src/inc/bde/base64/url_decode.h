@@ -59,9 +59,9 @@ extern "C" {
  * @brief Obtains the length of the decoded data from the length of the Base64URL encoded string.
  * @param[in] encoded_len Length of the Base64URL encoded string, not including the @c NULL terminator.
  * @param[out] decoded_len Length of the decoded data.
- * @retval bde_error_ok Success.
- * @retval bde_error_args Invalid arguments.
- * @retval bde_error_encoded_string The Base64URL encoded string has an invalid form.
+ * @retval ::bde_error_ok Success.
+ * @retval ::bde_error_args Invalid arguments.
+ * @retval ::bde_error_encoded_string The Base64URL encoded string has an invalid form.
  */
 bde_error_t bde_base64url_decode_length(const size_t encoded_len, size_t * const decoded_len);
 
@@ -74,9 +74,9 @@ bde_error_t bde_base64url_decode_length(const size_t encoded_len, size_t * const
  * @param[in] decoded_max_len Length of @p decoded.
  * @param[out] decoded Buffer where the decoded data will be written.
  * @param[out] decoded_len Amount of data written to @p decoded, can be @c NULL if not required by caller.
- * @retval bde_error_ok Success.
- * @retval bde_error_args Invalid arguments.
- * @retval bde_error_encoded_string The Base64URL encoded string given is not valid.
+ * @retval ::bde_error_ok Success.
+ * @retval ::bde_error_args Invalid arguments.
+ * @retval ::bde_error_encoded_string The Base64URL encoded string given is not valid.
  */
 bde_error_t bde_base64url_decode(const bde_enc_t * encoded,
                                  const size_t encoded_len,

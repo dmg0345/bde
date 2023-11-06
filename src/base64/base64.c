@@ -101,7 +101,7 @@ static const bde_dec_t bde_base64_decode_alphabet_lut[80U] = {
  * @param[out] decoded_octets_cbl Number of decoded octets that generate complete encoded blocks.
  * @param[out] decoded_octets_lbl Number of octets in the last uncomplete decoded block, if any.
  * @param[out] encoded_octets Number of octets in the resulting encoded string, not including the @c NULL terminator.
- * @retval bde_error_ok Success.
+ * @retval ::bde_error_ok Success.
  * @note There are three octets in a decoded block, there are four octets in a encoded block.
  * @note The output arguments are calculated in the order in which they appear in the parameter list of the function.
  */
@@ -128,8 +128,8 @@ static bde_enc_t bde_encode_elem(const bde_dec_t decoded, const size_t mode);
  * @param[out] encoded The buffer where the encoded string will be written.
  * @param[out] encoded_len The length of the encoded string written, not including the @c NULL terminator. Can
  * be @c NULL if not required.
- * @retval bde_error_ok Success.
- * @retval bde_error_buffer_length The buffer is not long enough for the encoded string.
+ * @retval ::bde_error_ok Success.
+ * @retval ::bde_error_buffer_length The buffer is not long enough for the encoded string.
  */
 static bde_error_t bde_encode(const bde_dec_t * const decoded,
                               const size_t decoded_len,
@@ -147,8 +147,8 @@ static bde_error_t bde_encode(const bde_dec_t * const decoded,
  * @param[out] encoded_octets_lbl Number of octets in the last uncomplete decoded block, including padding.
  * @param[out] encoded_octets_pad Number of padding characters in the encoded string.
  * @param[out] decoded_octets Number of octets in the resulting decoded data.
- * @retval bde_error_ok Success.
- * @retval bde_error_encoded_string The encoded string provided is not a valid encoded string in terms of form.
+ * @retval ::bde_error_ok Success.
+ * @retval ::bde_error_encoded_string The encoded string provided is not a valid encoded string in terms of form.
  * @note There are three octets in a decoded block, there are four octets in a encoded block.
  * @note The value returned in @p encoded_octets_lbl must be zero for a valid Base64 encoded string, as the length
  * of a valid Base64 encoded string is always a multiple of four.
@@ -181,9 +181,9 @@ static bde_dec_t bde_decode_elem(const bde_enc_t encoded, const size_t mode);
  * @param[in] decoded_max_len The length of the decoded buffer.
  * @param[out] decoded The buffer where the decoded data will be written to.
  * @param[out] decoded_len The length of the decoded data written to the decoded buffer, can be @c NULL if not required.
- * @retval bde_error_ok Success.
- * @retval bde_error_buffer_length The length of the decoded buffer is not enough for the decoded data.
- * @retval bde_error_encoded_string The encoded string is invalid, it has invalid characters.
+ * @retval ::bde_error_ok Success.
+ * @retval ::bde_error_buffer_length The length of the decoded buffer is not enough for the decoded data.
+ * @retval ::bde_error_encoded_string The encoded string is invalid, it has invalid characters.
  */
 static bde_error_t bde_decode(const bde_enc_t * const encoded,
                               const size_t encoded_len,
