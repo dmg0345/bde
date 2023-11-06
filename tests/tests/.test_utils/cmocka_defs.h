@@ -18,6 +18,8 @@ extern "C" {
 
 /** @defgroup cmocka_defs_defs Definitions */
 /** @defgroup cmocka_defs_papi Public API */
+/** @defgroup cmocka_defs_iapi_impl Internal API implementation */
+/** @defgroup cmocka_defs_papi_impl Public API implementation */
 
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include <stdarg.h>

@@ -16,12 +16,26 @@
 extern "C" {
 #endif
 
-/** @addtogroup bde Base Decoder and Encoder library
+/**
+ * @addtogroup bde Base Decoder and Encoder library
  * @{
  */
 
 /** @defgroup bde_defs Definitions */
 /** @defgroup bde_papi Public API */
+/** @defgroup bde_base64_decode_defs Definitions */
+/** @defgroup bde_base64_decode_papi Public API */
+/** @defgroup bde_base64_encode_defs Definitions */
+/** @defgroup bde_base64_encode_papi Public API */
+/** @defgroup bde_base64url_decode_defs Definitions */
+/** @defgroup bde_base64url_decode_papi Public API */
+/** @defgroup bde_base64url_encode_defs Definitions */
+/** @defgroup bde_base64url_encode_papi Public API */
+/** @defgroup bde_commons_defs Definitions */
+/** @defgroup bde_commons_errors Errors */
+/** @defgroup bde_commons_papi Public API */
+/** @defgroup bde_base64_iapi_impl Internal API implementation */
+/** @defgroup bde_base64_papi_impl Public API implementation */
 
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include "bde/other/version.h"
