@@ -8,9 +8,6 @@
  ***********************************************************************************************************************
  */
 
-/** @defgroup cmocka_defs_iapi_impl Internal API implementation */
-/** @defgroup cmocka_defs_papi_impl Public API implementation */
-
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include "cmocka_defs.h"
 

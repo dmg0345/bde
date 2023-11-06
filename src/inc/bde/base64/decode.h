@@ -16,9 +16,6 @@
 extern "C" {
 #endif
 
-/** @defgroup bde_base64_decode_defs Definitions */
-/** @defgroup bde_base64_decode_papi Public API */
-
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include "bde/other/commons.h"
 

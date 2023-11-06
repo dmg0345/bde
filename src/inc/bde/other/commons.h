@@ -16,10 +16,6 @@
 extern "C" {
 #endif
 
-/** @defgroup bde_commons_defs Definitions */
-/** @defgroup bde_commons_errors Errors */
-/** @defgroup bde_commons_papi Public API */
-
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include <stddef.h>
 #include <stdint.h>

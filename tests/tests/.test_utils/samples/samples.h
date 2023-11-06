@@ -17,8 +17,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 /** @defgroup bde_samples_defs Definitions */
-/** @defgroup bde_samples_errors Errors */
 /** @defgroup bde_samples_papi Public API */
+/** @defgroup bde_samples_iapi_impl Internal API implementation */
+/** @defgroup bde_samples_papi_impl Public API implementation */
 
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include "bde/other/commons.h"
@@ -56,15 +57,6 @@ typedef struct
 /* Exported constants ------------------------------------------------------------------------------------------------*/
 /**
  * @addtogroup bde_samples_defs
- * @{
- */
-
-/**
- * @}
- */
-
-/**
- * @addtogroup bde_samples_errors
  * @{
  */
 
