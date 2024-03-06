@@ -2,8 +2,8 @@
  ***********************************************************************************************************************
  * @file        url_encode.h
  * @author      Diego Martínez García (dmg0345@gmail.com)
- * @date        30-10-2023 21:48:22 (UTC)
- * @version     1.0.2
+ * @date        06-03-2024 22:23:23 (UTC)
+ * @version     1.0.3
  * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
@@ -15,9 +15,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/** @defgroup bde_base64url_encode_defs Definitions */
-/** @defgroup bde_base64url_encode_papi Public API */
 
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include "bde/other/commons.h"
@@ -62,8 +59,8 @@ extern "C" {
  * @brief Obtains the length of the Base64URL encoded string from the length of the decoded data.
  * @param[in] decoded_len Length of the decoded data.
  * @param[out] encoded_len Length of the Base64URL encoded string, not including the @c NULL terminator.
- * @retval bde_error_ok Success.
- * @retval bde_error_args Invalid arguments.
+ * @retval ::bde_error_ok Success.
+ * @retval ::bde_error_args Invalid arguments.
  */
 bde_error_t bde_base64url_encode_length(const size_t decoded_len, size_t * const encoded_len);
 
@@ -77,8 +74,8 @@ bde_error_t bde_base64url_encode_length(const size_t decoded_len, size_t * const
  * @param[out] encoded Buffer where the Base64URL encoded string and the @c NULL terminator will be written.
  * @param[out] encoded_len Amount of data written to @p encoded, not including the @c NULL terminator, can be @c NULL if
  * not required by caller.
- * @retval bde_error_ok Success.
- * @retval bde_error_args Invalid arguments.
+ * @retval ::bde_error_ok Success.
+ * @retval ::bde_error_args Invalid arguments.
  */
 bde_error_t bde_base64url_encode(const bde_dec_t * const decoded,
                                  const size_t decoded_len,

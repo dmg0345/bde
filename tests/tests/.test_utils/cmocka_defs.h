@@ -2,8 +2,8 @@
  ***********************************************************************************************************************
  * @file        cmocka_defs.h
  * @author      Diego Martínez García (dmg0345@gmail.com)
- * @date        30-10-2023 21:48:22 (UTC)
- * @version     1.0.2
+ * @date        06-03-2024 22:23:23 (UTC)
+ * @version     1.0.3
  * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
@@ -17,8 +17,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 /** @defgroup cmocka_defs_defs Definitions */
-/** @defgroup cmocka_defs_errors Errors */
 /** @defgroup cmocka_defs_papi Public API */
+/** @defgroup cmocka_defs_iapi_impl Internal API implementation */
+/** @defgroup cmocka_defs_papi_impl Public API implementation */
 
 /* Includes ----------------------------------------------------------------------------------------------------------*/
 #include <stdarg.h>
@@ -49,15 +50,6 @@ extern "C" {
 /* Exported constants ------------------------------------------------------------------------------------------------*/
 /**
  * @addtogroup cmocka_defs_defs
- * @{
- */
-
-/**
- * @}
- */
-
-/**
- * @addtogroup cmocka_defs_errors
  * @{
  */
 
@@ -104,6 +96,6 @@ void cmocka_init(void);
 }
 #endif /* __cplusplus */
 
-#endif /* CMOCKA_DEFS */
+#endif /* CMOCKA_DEFS_H */
 
 /******************************************************************************************************END OF FILE*****/

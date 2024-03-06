@@ -2,8 +2,8 @@
  ***********************************************************************************************************************
  * @file        test_base64url_encode.c
  * @author      Diego Martínez García (dmg0345@gmail.com)
- * @date        30-10-2023 21:48:22 (UTC)
- * @version     1.0.2
+ * @date        06-03-2024 22:23:23 (UTC)
+ * @version     1.0.3
  * @copyright   github.com/dmg0345/bde/blob/master/LICENSE
  ***********************************************************************************************************************
  */
@@ -22,14 +22,10 @@
 static sample_test_data_t tds; /**< Test data structure. */
 
 /* Private function prototypes ---------------------------------------------------------------------------------------*/
-/**
- * @brief Suite setup function.
- */
+/** Suite setup function. */
 static int setup(void ** state);
 
-/**
- * @brief Suite teardown function.
- */
+/** Suite teardown function. */
 static int teardown(void ** state);
 
 /**
@@ -37,39 +33,19 @@ static int teardown(void ** state);
  * @{
  */
 
-/**
- * @brief Tests invalid arguments when performing a encoding to a Base64URL string.
- */
+/** Tests invalid arguments when performing a encoding to a Base64URL string. */
 static void test_base64url_encode_invalid_args(void ** state);
-
-/**
- * @brief Tests invalid buffer lengths for the encoding buffer when encoding.
- */
+/** Tests invalid buffer lengths for the encoding buffer when encoding. */
 static void test_base64url_encode_invalid_buffer_length(void ** state);
-
-/**
- * @brief Tests encoding without querying the encoded length.
- */
+/** Tests encoding without querying the encoded length. */
 static void test_base64url_encode_ignored_buffer_length(void ** state);
-
-/**
- * @brief Tests encoding on two separate buffers, one for encoding and another for decoding.
- */
+/** Tests encoding on two separate buffers, one for encoding and another for decoding. */
 static void test_base64url_encode_two_separate_buffers(void ** state);
-
-/**
- * @brief Tests encoding on a single in-place buffer, used for both encoding and decoding.
- */
+/** Tests encoding on a single in-place buffer, used for both encoding and decoding. */
 static void test_base64url_encode_single_inplace_buffers(void ** state);
-
-/**
- * @brief Tests obtaining the length of a encode with invalid arguments.
- */
+/** Tests obtaining the length of a encode with invalid arguments. */
 static void test_base64url_encode_length_invalid_args(void ** state);
-
-/**
- * @brief Tests obtaining the length of a encode for the samples.
- */
+/** Tests obtaining the length of a encode for the samples. */
 static void test_base64url_encode_length_samples(void ** state);
 
 /**
@@ -232,7 +208,6 @@ static void test_base64url_encode_length_samples(void ** state)
 }
 
 /* Exported functions ------------------------------------------------------------------------------------------------*/
-#if !defined(DOXYGEN)
 /**
  * @brief Test runner for this suite of tests.
  * @return The result of the test runner.
@@ -254,8 +229,7 @@ int main(void)
     };
 
     // Execute the test runner.
-    return cmocka_run_group_tests_name("test_base64url_encode", tests, NULL, NULL);
+    return cmocka_run_group_tests_name("base64url_encode", tests, NULL, NULL);
 }
-#endif /* !DOXYGEN */
 
 /******************************************************************************************************END OF FILE*****/

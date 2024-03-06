@@ -28,7 +28,7 @@ author = "Diego Martínez García <dmg0345@gmail.com>"
 # Project copyright.
 copyright = author
 # Project version.
-version = "1.0.2"
+version = "1.0.3"
 # Project release, set it as the same value as version as the separation is not required.
 release = version
 
@@ -94,9 +94,9 @@ html_short_title = html_title
 # HTML base URL which points to the root HTML documentation.
 html_baseurl = ""
 # Path to the HTML logo.
-html_logo = None
+html_logo = ".assets/img/logo_128x128.png"
 # Path to the HTML fav icon.
-html_favicon = None
+html_favicon = ".assets/img/logo_16x16.png"
 # Add permalinks to every section.
 html_permalinks = True
 # Do not include the original sources in the final documentation.

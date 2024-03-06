@@ -46,8 +46,8 @@ License
     :hidden:
 
     self
-    Base64 <usecases/base64>
-    Base64URL <usecases/base64url>
+    Base64 use cases <usecases/base64>
+    Base64URL use cases <usecases/base64url>
 
 .. toctree::
     :caption: API
